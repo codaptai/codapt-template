@@ -20,6 +20,9 @@ async function runIfFileChanged(
   filenameToCheck: string,
   checksumFilename: string,
   functionToRunIfChanged: () => Promise<void>,
+  opts?: {
+    functionToRunIfNotChanged?: () => Promise<void>;
+  },
 ): Promise<void> {
   async function calculateChecksum(file: string): Promise<string> {
     return new Promise((resolve, reject) => {
@@ -64,6 +67,8 @@ async function runIfFileChanged(
   if (storedChecksum === null || currentChecksum !== storedChecksum) {
     await functionToRunIfChanged();
     await writeChecksumFile(checksumFilename, currentChecksum);
+  } else if (opts?.functionToRunIfNotChanged) {
+    await opts.functionToRunIfNotChanged();
   }
 }
 
@@ -94,6 +99,11 @@ void (async () => {
         console.log("running prisma db push");
         await promisify(exec)("npx prisma db push --accept-data-loss");
       }
+    },
+    {
+      functionToRunIfNotChanged: async function () {
+        console.log("schema has not changed");
+      },
     },
   );
 
