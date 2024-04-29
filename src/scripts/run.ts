@@ -74,7 +74,7 @@ async function runIfFileChanged(
   }
 }
 
-void (async () => {
+(async () => {
   console.log(
     "running prisma generate & deploying migrations if schema has changed",
   );
@@ -119,11 +119,38 @@ void (async () => {
 
   console.log(`run.ts: launching next.js app in ${env.NODE_ENV} mode`);
 
+  let command: string;
+  let args: string[];
+
   if (env.NODE_ENV === "production") {
     // run next app
-    spawn("npx", ["next", "start", "-p", "8001"]);
+    command = "npx";
+    args = ["next", "start", "-p", "8001"];
   } else {
     // run next app in dev mode
-    spawn("npx", ["next", "dev", "-p", "8001"]);
+    command = "npx";
+    args = ["next", "dev", "-p", "8001"];
   }
-})();
+
+  // launch using spawn
+  const child = spawn(command, args);
+
+  // wait for process to end
+  await new Promise((resolve, reject) => {
+    child.on("exit", (code) => {
+      if (code === 0) {
+        resolve(code);
+      } else {
+        reject(new Error(`child process exited with code ${code}`));
+      }
+    });
+  });
+})()
+  .then(() => {
+    console.log("run.ts: process ended");
+    process.exit(0);
+  })
+  .catch((err) => {
+    console.error(err);
+    process.exit(1);
+  });
