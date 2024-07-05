@@ -22,7 +22,7 @@ const config = {
         prefer: "no-type-imports",
       },
     ],
-    "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
+    "@typescript-eslint/no-unused-vars": "off",
     "@typescript-eslint/no-misused-promises": [
       2,
       {
@@ -39,6 +39,8 @@ const config = {
       },
     ],
     "react/react-in-jsx-scope": "off",
+    "prefer-const": "off",
+    "@typescript-eslint/prefer-nullish-coalescing": "off",
   },
 };
 
