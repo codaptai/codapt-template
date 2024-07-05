@@ -9,6 +9,7 @@
     "dev": "nodemon",
     "postinstall": "prisma generate",
     "lint": "next lint",
+    "lint:fix": "npx eslint --fix -c .eslintrc.fix.cjs .",
     "typecheck": "tsc --noEmit",
     "format": "prettier --write .",
     "start": "next start"

@@ -31,13 +31,7 @@ const config = {
     ],
     "require-await": "off",
     "@typescript-eslint/require-await": "off",
-    "import/order": [
-      "warn",
-      {
-        "newlines-between": "always",
-        alphabetize: { order: "asc", caseInsensitive: true },
-      },
-    ],
+    "import/order": "off",
     "react/react-in-jsx-scope": "off",
     "prefer-const": "off",
     "@typescript-eslint/prefer-nullish-coalescing": "off",
